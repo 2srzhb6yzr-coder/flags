@@ -340,17 +340,17 @@
         <button class="level-card" onclick="startGame('facil')">
           <div class="big-emoji">⭐</div>
           <div class="level-title">Nivel 1: Súper fáciles</div>
-          <div class="level-desc">20 banderas muy conocidas del mundo. Para empezar tranquilo, Marco.</div>
+          <div class="level-desc">40 banderas muy conocidas, incluyendo UE, ONU y OTAN. Para empezar tranquilo, Marco.</div>
         </button>
         <button class="level-card" onclick="startGame('medio')">
           <div class="big-emoji">🚀</div>
           <div class="level-title">Nivel 2: Explorador</div>
-          <div class="level-desc">50 países importantes. Más reto, pero sin volverse loco.</div>
+          <div class="level-desc">80 banderas importantes del mundo. Más reto, pero todavía manejable.</div>
         </button>
         <button class="level-card" onclick="startGame('dificil')">
           <div class="big-emoji">🏆</div>
           <div class="level-title">Nivel 3: Experto</div>
-          <div class="level-desc">100 países importantes del mundo. Para jugar poco a poco.</div>
+          <div class="level-desc">Más de 180 países. Modo largo para aprender el mundo entero poco a poco.</div>
         </button>
         <button class="level-card" onclick="startGame('repaso')">
           <div class="big-emoji">🔁</div>
@@ -391,32 +391,84 @@
 
   <script>
     const FACIL = [
-      ["España","🇪🇸"], ["Francia","🇫🇷"], ["Italia","🇮🇹"], ["Alemania","🇩🇪"], ["Portugal","🇵🇹"],
-      ["Reino Unido","🇬🇧"], ["Estados Unidos","🇺🇸"], ["Brasil","🇧🇷"], ["Japón","🇯🇵"], ["Corea del Sur","🇰🇷"],
-      ["China","🇨🇳"], ["Canadá","🇨🇦"], ["México","🇲🇽"], ["Argentina","🇦🇷"], ["Australia","🇦🇺"],
-      ["India","🇮🇳"], ["Marruecos","🇲🇦"], ["Grecia","🇬🇷"], ["Suecia","🇸🇪"], ["Suiza","🇨🇭"]
+      ["Alemania","🇩🇪"],
+      ["Andorra","🇦🇩"],
+      ["Arabia Saudí","🇸🇦"],
+      ["Argentina","🇦🇷"],
+      ["Australia","🇦🇺"],
+      ["Austria","🇦🇹"],
+      ["Bélgica","🇧🇪"],
+      ["Brasil","🇧🇷"],
+      ["Canadá","🇨🇦"],
+      ["Chile","🇨🇱"],
+      ["China","🇨🇳"],
+      ["Corea del Sur","🇰🇷"],
+      ["Dinamarca","🇩🇰"],
+      ["Egipto","🇪🇬"],
+      ["España","🇪🇸"],
+      ["Estados Unidos","🇺🇸"],
+      ["Finlandia","🇫🇮"],
+      ["Francia","🇫🇷"],
+      ["Grecia","🇬🇷"],
+      ["India","🇮🇳"],
+      ["Irlanda","🇮🇪"],
+      ["Italia","🇮🇹"],
+      ["Japón","🇯🇵"],
+      ["Malta","🇲🇹"],
+      ["Marruecos","🇲🇦"],
+      ["México","🇲🇽"],
+      ["Noruega","🇳🇴"],
+      ["Nueva Zelanda","🇳🇿"],
+      ["ONU","🇺🇳"],
+      ["Países Bajos","🇳🇱"],
+      ["Polonia","🇵🇱"],
+      ["Portugal","🇵🇹"],
+      ["Reino Unido","🇬🇧"],
+      ["Rusia","🇷🇺"],
+      ["Sudáfrica","🇿🇦"],
+      ["Suecia","🇸🇪"],
+      ["Suiza","🇨🇭"],
+      ["Turquía","🇹🇷"],
+      ["Ucrania","🇺🇦"],
+      ["Unión Europea","🇪🇺"]
     ];
 
     const MEDIO_EXTRA = [
-      ["Países Bajos","🇳🇱"], ["Bélgica","🇧🇪"], ["Irlanda","🇮🇪"], ["Noruega","🇳🇴"], ["Dinamarca","🇩🇰"],
-      ["Finlandia","🇫🇮"], ["Polonia","🇵🇱"], ["Austria","🇦🇹"], ["Turquía","🇹🇷"], ["Egipto","🇪🇬"],
-      ["Sudáfrica","🇿🇦"], ["Colombia","🇨🇴"], ["Chile","🇨🇱"], ["Perú","🇵🇪"], ["Uruguay","🇺🇾"],
-      ["Cuba","🇨🇺"], ["Jamaica","🇯🇲"], ["Tailandia","🇹🇭"], ["Vietnam","🇻🇳"], ["Indonesia","🇮🇩"],
-      ["Filipinas","🇵🇭"], ["Nueva Zelanda","🇳🇿"], ["Rusia","🇷🇺"], ["Ucrania","🇺🇦"], ["Israel","🇮🇱"],
-      ["Arabia Saudí","🇸🇦"], ["Emiratos Árabes Unidos","🇦🇪"], ["Nigeria","🇳🇬"], ["Kenia","🇰🇪"], ["Corea del Norte","🇰🇵"]
+      ["Bangladés","🇧🇩"], ["Bolivia","🇧🇴"], ["Bulgaria","🇧🇬"], ["Colombia","🇨🇴"], ["Corea del Norte","🇰🇵"],
+      ["Costa Rica","🇨🇷"], ["Croacia","🇭🇷"], ["Cuba","🇨🇺"], ["Ecuador","🇪🇨"], ["Emiratos Árabes Unidos","🇦🇪"],
+      ["Etiopía","🇪🇹"], ["Filipinas","🇵🇭"], ["Ghana","🇬🇭"], ["Hungría","🇭🇺"], ["Indonesia","🇮🇩"],
+      ["Irak","🇮🇶"], ["Irán","🇮🇷"], ["Islandia","🇮🇸"], ["Israel","🇮🇱"], ["Jamaica","🇯🇲"],
+      ["Kenia","🇰🇪"], ["Líbano","🇱🇧"], ["Luxemburgo","🇱🇺"], ["Malasia","🇲🇾"], ["Nigeria","🇳🇬"],
+      ["Pakistán","🇵🇰"], ["Paraguay","🇵🇾"], ["Perú","🇵🇪"], ["Qatar","🇶🇦"], ["República Checa","🇨🇿"],
+      ["República Dominicana","🇩🇴"], ["Rumanía","🇷🇴"], ["Senegal","🇸🇳"], ["Serbia","🇷🇸"], ["Singapur","🇸🇬"],
+      ["Tailandia","🇹🇭"], ["Tanzania","🇹🇿"], ["Uruguay","🇺🇾"], ["Venezuela","🇻🇪"], ["Vietnam","🇻🇳"]
     ];
 
     const DIFICIL_EXTRA = [
-      ["Croacia","🇭🇷"], ["Serbia","🇷🇸"], ["Rumanía","🇷🇴"], ["Bulgaria","🇧🇬"], ["Hungría","🇭🇺"],
-      ["República Checa","🇨🇿"], ["Eslovaquia","🇸🇰"], ["Eslovenia","🇸🇮"], ["Islandia","🇮🇸"], ["Luxemburgo","🇱🇺"],
-      ["Malta","🇲🇹"], ["Chipre","🇨🇾"], ["Estonia","🇪🇪"], ["Letonia","🇱🇻"], ["Lituania","🇱🇹"],
-      ["Argelia","🇩🇿"], ["Túnez","🇹🇳"], ["Senegal","🇸🇳"], ["Ghana","🇬🇭"], ["Etiopía","🇪🇹"],
-      ["Tanzania","🇹🇿"], ["Uganda","🇺🇬"], ["Angola","🇦🇴"], ["Mozambique","🇲🇿"], ["Costa de Marfil","🇨🇮"],
-      ["Pakistán","🇵🇰"], ["Bangladés","🇧🇩"], ["Sri Lanka","🇱🇰"], ["Nepal","🇳🇵"], ["Malasia","🇲🇾"],
-      ["Singapur","🇸🇬"], ["Camboya","🇰🇭"], ["Laos","🇱🇦"], ["Mongolia","🇲🇳"], ["Kazajistán","🇰🇿"],
-      ["Irán","🇮🇷"], ["Irak","🇮🇶"], ["Jordania","🇯🇴"], ["Líbano","🇱🇧"], ["Catar","🇶🇦"],
-      ["Paraguay","🇵🇾"], ["Bolivia","🇧🇴"], ["Ecuador","🇪🇨"], ["Venezuela","🇻🇪"], ["Panamá","🇵🇦"],
-      ["Costa Rica","🇨🇷"], ["Guatemala","🇬🇹"], ["República Dominicana","🇩🇴"], ["Honduras","🇭🇳"], ["Puerto Rico","🇵🇷"]
+      ["Afganistán","🇦🇫"], ["Albania","🇦🇱"], ["Argelia","🇩🇿"], ["Andorra","🇦🇩"], ["Angola","🇦🇴"],
+      ["Antigua y Barbuda","🇦🇬"], ["Armenia","🇦🇲"], ["Azerbaiyán","🇦🇿"], ["Bahamas","🇧🇸"], ["Baréin","🇧🇭"],
+      ["Barbados","🇧🇧"], ["Bielorrusia","🇧🇾"], ["Belice","🇧🇿"], ["Benín","🇧🇯"], ["Bután","🇧🇹"],
+      ["Bosnia y Herzegovina","🇧🇦"], ["Botsuana","🇧🇼"], ["Brunéi","🇧🇳"], ["Burkina Faso","🇧🇫"], ["Burundi","🇧🇮"],
+      ["Cabo Verde","🇨🇻"], ["Camboya","🇰🇭"], ["Camerún","🇨🇲"], ["Chad","🇹🇩"], ["Chipre","🇨🇾"],
+      ["Comoras","🇰🇲"], ["República del Congo","🇨🇬"], ["República Democrática del Congo","🇨🇩"], ["Costa de Marfil","🇨🇮"], ["Yibuti","🇩🇯"],
+      ["Dominica","🇩🇲"], ["El Salvador","🇸🇻"], ["Eritrea","🇪🇷"], ["Eslovaquia","🇸🇰"], ["Eslovenia","🇸🇮"],
+      ["Estonia","🇪🇪"], ["Esuatini","🇸🇿"], ["Fiyi","🇫🇯"], ["Gabón","🇬🇦"], ["Gambia","🇬🇲"],
+      ["Georgia","🇬🇪"], ["Granada","🇬🇩"], ["Guatemala","🇬🇹"], ["Guinea","🇬🇳"], ["Guinea-Bisáu","🇬🇼"],
+      ["Guinea Ecuatorial","🇬🇶"], ["Guyana","🇬🇾"], ["Haití","🇭🇹"], ["Honduras","🇭🇳"], ["Jordania","🇯🇴"],
+      ["Kazajistán","🇰🇿"], ["Kirguistán","🇰🇬"], ["Kiribati","🇰🇮"], ["Kosovo","🇽🇰"], ["Kuwait","🇰🇼"],
+      ["Laos","🇱🇦"], ["Lesoto","🇱🇸"], ["Letonia","🇱🇻"], ["Liberia","🇱🇷"], ["Libia","🇱🇾"],
+      ["Liechtenstein","🇱🇮"], ["Lituania","🇱🇹"], ["Madagascar","🇲🇬"], ["Malaui","🇲🇼"], ["Maldivas","🇲🇻"],
+      ["Mali","🇲🇱"], ["Islas Marshall","🇲🇭"], ["Mauricio","🇲🇺"], ["Mauritania","🇲🇷"], ["Micronesia","🇫🇲"],
+      ["Moldavia","🇲🇩"], ["Mónaco","🇲🇨"], ["Mongolia","🇲🇳"], ["Montenegro","🇲🇪"], ["Mozambique","🇲🇿"],
+      ["Myanmar","🇲🇲"], ["Namibia","🇳🇦"], ["Nauru","🇳🇷"], ["Nepal","🇳🇵"], ["Nicaragua","🇳🇮"],
+      ["Níger","🇳🇪"], ["Macedonia del Norte","🇲🇰"], ["Omán","🇴🇲"], ["Palaos","🇵🇼"], ["Palestina","🇵🇸"],
+      ["Panamá","🇵🇦"], ["Papúa Nueva Guinea","🇵🇬"], ["Puerto Rico","🇵🇷"], ["Ruanda","🇷🇼"], ["San Cristóbal y Nieves","🇰🇳"],
+      ["San Marino","🇸🇲"], ["San Vicente y las Granadinas","🇻🇨"], ["Santa Lucía","🇱🇨"], ["Santo Tomé y Príncipe","🇸🇹"], ["Seychelles","🇸🇨"],
+      ["Sierra Leona","🇸🇱"], ["Siria","🇸🇾"], ["Somalia","🇸🇴"], ["Sri Lanka","🇱🇰"], ["Sudán","🇸🇩"],
+      ["Sudán del Sur","🇸🇸"], ["Surinam","🇸🇷"], ["Tayikistán","🇹🇯"], ["Timor Oriental","🇹🇱"], ["Togo","🇹🇬"],
+      ["Tonga","🇹🇴"], ["Trinidad y Tobago","🇹🇹"], ["Túnez","🇹🇳"], ["Turkmenistán","🇹🇲"], ["Tuvalu","🇹🇻"],
+      ["Uganda","🇺🇬"], ["Uzbekistán","🇺🇿"], ["Vanuatu","🇻🇺"], ["Ciudad del Vaticano","🇻🇦"], ["Yemen","🇾🇪"],
+      ["Zambia","🇿🇲"], ["Zimbabue","🇿🇼"], ["Taiwán","🇹🇼"], ["Islas Salomón","🇸🇧"], ["Samoa","🇼🇸"]
     ];
 
     const toCountries = list => list.map(([name, flag]) => ({ name, flag }));
