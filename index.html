@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Aprende Banderas con Marco</title>
+  <style>
+    :root {
+      --bg: #f7f4ea;
+      --card: #ffffff;
+      --text: #243042;
+      --muted: #667085;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --good: #16a34a;
+      --bad: #dc2626;
+      --warn: #f59e0b;
+      --shadow: 0 18px 40px rgba(36, 48, 66, 0.16);
+      --radius: 28px;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #dbeafe 0, transparent 34%),
+                  radial-gradient(circle at bottom right, #fde68a 0, transparent 34%),
+                  var(--bg);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+    }
+
+    .app {
+      width: min(980px, 100%);
+      min-height: min(720px, calc(100vh - 36px));
+      background: rgba(255,255,255,0.86);
+      backdrop-filter: blur(10px);
+      border-radius: 34px;
+      box-shadow: var(--shadow);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(2rem, 4vw, 3.4rem);
+      letter-spacing: -0.05em;
+    }
+
+    .subtitle {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: clamp(1rem, 2vw, 1.25rem);
+    }
+
+    .stats {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .pill {
+      background: #f1f5f9;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 800;
+      color: #334155;
+      font-size: 0.98rem;
+      white-space: nowrap;
+    }
+
+    .screen {
+      display: none;
+      flex: 1;
+      animation: popIn 220ms ease-out;
+    }
+
+    .screen.active {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    .level-card {
+      border: 0;
+      background: var(--card);
+      color: var(--text);
+      border-radius: var(--radius);
+      padding: 22px;
+      text-align: left;
+      min-height: 168px;
+      cursor: pointer;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.10);
+      transition: transform 160ms ease, box-shadow 160ms ease;
+    }
+
+    .level-card:active { transform: scale(0.98); }
+    .level-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(15, 23, 42, 0.14);
+    }
+
+    .level-title {
+      font-size: clamp(1.4rem, 2.4vw, 2rem);
+      font-weight: 950;
+      margin-bottom: 8px;
+    }
+
+    .level-desc {
+      color: var(--muted);
+      line-height: 1.35;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+    }
+
+    .big-emoji {
+      font-size: 2.1rem;
+      margin-bottom: 8px;
+    }
+
+    .game-card {
+      flex: 1;
+      background: var(--card);
+      border-radius: 32px;
+      padding: clamp(18px, 4vw, 34px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.10);
+      position: relative;
+    }
+
+    .question {
+      font-size: clamp(1.3rem, 3vw, 2rem);
+      font-weight: 900;
+      text-align: center;
+      color: #334155;
+    }
+
+    .flag {
+      font-size: clamp(7.5rem, 20vw, 13rem);
+      line-height: 1;
+      filter: drop-shadow(0 14px 10px rgba(0,0,0,0.10));
+      animation: float 2.4s ease-in-out infinite;
+    }
+
+    .answers {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .answer {
+      border: 0;
+      min-height: 82px;
+      border-radius: 24px;
+      background: #eff6ff;
+      color: #1e3a8a;
+      font-size: clamp(1.15rem, 2.4vw, 1.65rem);
+      font-weight: 950;
+      cursor: pointer;
+      padding: 14px;
+      transition: transform 130ms ease, background 130ms ease, color 130ms ease;
+    }
+
+    .answer.flag-option {
+      min-height: 118px;
+      font-size: clamp(4.2rem, 9vw, 6.4rem);
+      line-height: 1;
+      padding: 10px;
+    }
+
+    .answer:active { transform: scale(0.97); }
+    .answer.correct {
+      background: #dcfce7;
+      color: #166534;
+      animation: correctPulse 480ms ease;
+    }
+    .answer.wrong {
+      background: #fee2e2;
+      color: #991b1b;
+      animation: shake 320ms ease;
+    }
+
+    .toolbar {
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: 0;
+      border-radius: 999px;
+      background: var(--primary);
+      color: white;
+      font-weight: 900;
+      font-size: 1rem;
+      padding: 12px 18px;
+      cursor: pointer;
+    }
+
+    .btn.secondary { background: #e2e8f0; color: #334155; }
+    .btn.warn { background: var(--warn); color: #422006; }
+
+    .feedback {
+      min-height: 36px;
+      text-align: center;
+      font-weight: 950;
+      font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+    }
+
+    .feedback.good { color: var(--good); }
+    .feedback.bad { color: var(--bad); }
+
+    .progress-wrap {
+      width: 100%;
+      height: 12px;
+      background: #e2e8f0;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #22c55e, #2563eb);
+      transition: width 260ms ease;
+    }
+
+    .result-box {
+      background: white;
+      border-radius: 32px;
+      padding: 28px;
+      text-align: center;
+      box-shadow: 0 10px 24px rgba(15, 23, 42, 0.10);
+      margin: auto;
+      width: min(620px, 100%);
+    }
+
+    .result-title {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      margin: 0 0 8px;
+    }
+
+    .result-text {
+      color: var(--muted);
+      font-size: 1.25rem;
+      line-height: 1.4;
+      margin-bottom: 22px;
+    }
+
+    .stars {
+      font-size: clamp(2.4rem, 7vw, 5rem);
+      margin: 8px 0 18px;
+    }
+
+    .small-note {
+      color: var(--muted);
+      font-size: 0.98rem;
+      margin-top: 6px;
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.98); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-8px); }
+      75% { transform: translateX(8px); }
+    }
+    @keyframes correctPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    @media (max-width: 680px) {
+      body { padding: 10px; }
+      .app { padding: 16px; border-radius: 26px; }
+      .menu-grid, .answers { grid-template-columns: 1fr; }
+      .answer { min-height: 70px; }
+      .answer.flag-option { min-height: 106px; font-size: clamp(4.8rem, 18vw, 6.4rem); }
+      header { align-items: flex-start; }
+      .stats { justify-content: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header>
+      <div>
+        <h1>🌍 Banderas con Marco</h1>
+        <p class="subtitle">Marco, mira la bandera, elige la respuesta y suma estrellas.</p>
+      </div>
+      <div class="stats" id="stats">
+        <div class="pill">Puntos: <span id="score">0</span></div>
+        <div class="pill">Racha: <span id="streak">0</span></div>
+        <div class="pill">Nivel: <span id="levelName">Inicio</span></div>
+      </div>
+    </header>
+
+    <section id="menu" class="screen active">
+      <div class="menu-grid">
+        <button class="level-card" onclick="startGame('facil')">
+          <div class="big-emoji">⭐</div>
+          <div class="level-title">Nivel 1: Súper fáciles</div>
+          <div class="level-desc">20 banderas muy conocidas del mundo. Para empezar tranquilo, Marco.</div>
+        </button>
+        <button class="level-card" onclick="startGame('medio')">
+          <div class="big-emoji">🚀</div>
+          <div class="level-title">Nivel 2: Explorador</div>
+          <div class="level-desc">50 países importantes. Más reto, pero sin volverse loco.</div>
+        </button>
+        <button class="level-card" onclick="startGame('dificil')">
+          <div class="big-emoji">🏆</div>
+          <div class="level-title">Nivel 3: Experto</div>
+          <div class="level-desc">100 países importantes del mundo. Para jugar poco a poco.</div>
+        </button>
+        <button class="level-card" onclick="startGame('repaso')">
+          <div class="big-emoji">🔁</div>
+          <div class="level-title">Repasar fallos</div>
+          <div class="level-desc">Marco repasará las banderas que más le han costado.</div>
+        </button>
+      </div>
+      <p class="small-note">Consejo: mejor 5 minutos concentrado que una partida demasiado larga.</p>
+    </section>
+
+    <section id="game" class="screen">
+      <div class="toolbar">
+        <button class="btn secondary" onclick="showMenu()">← Menú</button>
+        <div class="pill">Pregunta <span id="questionNumber">1</span> de <span id="totalQuestions">10</span></div>
+        <button class="btn warn" onclick="toggleMode()">Modo: <span id="modeText">Bandera → País</span></button>
+      </div>
+
+      <div class="progress-wrap"><div id="progress" class="progress"></div></div>
+
+      <div class="game-card">
+        <div id="question" class="question">¿Qué país tiene esta bandera?</div>
+        <div id="flag" class="flag" aria-label="Bandera"></div>
+        <div id="answers" class="answers"></div>
+        <div id="feedback" class="feedback"></div>
+      </div>
+    </section>
+
+    <section id="result" class="screen">
+      <div class="result-box">
+        <h2 class="result-title">¡Partida terminada!</h2>
+        <div id="stars" class="stars">⭐⭐⭐</div>
+        <p id="resultText" class="result-text"></p>
+        <button class="btn" onclick="restartSameLevel()">Jugar otra vez</button>
+        <button class="btn secondary" onclick="showMenu()">Elegir otro nivel</button>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const FACIL = [
+      ["España","🇪🇸"], ["Francia","🇫🇷"], ["Italia","🇮🇹"], ["Alemania","🇩🇪"], ["Portugal","🇵🇹"],
+      ["Reino Unido","🇬🇧"], ["Estados Unidos","🇺🇸"], ["Brasil","🇧🇷"], ["Japón","🇯🇵"], ["Corea del Sur","🇰🇷"],
+      ["China","🇨🇳"], ["Canadá","🇨🇦"], ["México","🇲🇽"], ["Argentina","🇦🇷"], ["Australia","🇦🇺"],
+      ["India","🇮🇳"], ["Marruecos","🇲🇦"], ["Grecia","🇬🇷"], ["Suecia","🇸🇪"], ["Suiza","🇨🇭"]
+    ];
+
+    const MEDIO_EXTRA = [
+      ["Países Bajos","🇳🇱"], ["Bélgica","🇧🇪"], ["Irlanda","🇮🇪"], ["Noruega","🇳🇴"], ["Dinamarca","🇩🇰"],
+      ["Finlandia","🇫🇮"], ["Polonia","🇵🇱"], ["Austria","🇦🇹"], ["Turquía","🇹🇷"], ["Egipto","🇪🇬"],
+      ["Sudáfrica","🇿🇦"], ["Colombia","🇨🇴"], ["Chile","🇨🇱"], ["Perú","🇵🇪"], ["Uruguay","🇺🇾"],
+      ["Cuba","🇨🇺"], ["Jamaica","🇯🇲"], ["Tailandia","🇹🇭"], ["Vietnam","🇻🇳"], ["Indonesia","🇮🇩"],
+      ["Filipinas","🇵🇭"], ["Nueva Zelanda","🇳🇿"], ["Rusia","🇷🇺"], ["Ucrania","🇺🇦"], ["Israel","🇮🇱"],
+      ["Arabia Saudí","🇸🇦"], ["Emiratos Árabes Unidos","🇦🇪"], ["Nigeria","🇳🇬"], ["Kenia","🇰🇪"], ["Corea del Norte","🇰🇵"]
+    ];
+
+    const DIFICIL_EXTRA = [
+      ["Croacia","🇭🇷"], ["Serbia","🇷🇸"], ["Rumanía","🇷🇴"], ["Bulgaria","🇧🇬"], ["Hungría","🇭🇺"],
+      ["República Checa","🇨🇿"], ["Eslovaquia","🇸🇰"], ["Eslovenia","🇸🇮"], ["Islandia","🇮🇸"], ["Luxemburgo","🇱🇺"],
+      ["Malta","🇲🇹"], ["Chipre","🇨🇾"], ["Estonia","🇪🇪"], ["Letonia","🇱🇻"], ["Lituania","🇱🇹"],
+      ["Argelia","🇩🇿"], ["Túnez","🇹🇳"], ["Senegal","🇸🇳"], ["Ghana","🇬🇭"], ["Etiopía","🇪🇹"],
+      ["Tanzania","🇹🇿"], ["Uganda","🇺🇬"], ["Angola","🇦🇴"], ["Mozambique","🇲🇿"], ["Costa de Marfil","🇨🇮"],
+      ["Pakistán","🇵🇰"], ["Bangladés","🇧🇩"], ["Sri Lanka","🇱🇰"], ["Nepal","🇳🇵"], ["Malasia","🇲🇾"],
+      ["Singapur","🇸🇬"], ["Camboya","🇰🇭"], ["Laos","🇱🇦"], ["Mongolia","🇲🇳"], ["Kazajistán","🇰🇿"],
+      ["Irán","🇮🇷"], ["Irak","🇮🇶"], ["Jordania","🇯🇴"], ["Líbano","🇱🇧"], ["Catar","🇶🇦"],
+      ["Paraguay","🇵🇾"], ["Bolivia","🇧🇴"], ["Ecuador","🇪🇨"], ["Venezuela","🇻🇪"], ["Panamá","🇵🇦"],
+      ["Costa Rica","🇨🇷"], ["Guatemala","🇬🇹"], ["República Dominicana","🇩🇴"], ["Honduras","🇭🇳"], ["Puerto Rico","🇵🇷"]
+    ];
+
+    const toCountries = list => list.map(([name, flag]) => ({ name, flag }));
+
+    const LEVELS = {
+      facil: { name: "Súper fáciles", questions: 10, countries: toCountries(FACIL) },
+      medio: { name: "Explorador", questions: 12, countries: toCountries([...FACIL, ...MEDIO_EXTRA]) },
+      dificil: { name: "Experto", questions: 15, countries: toCountries([...FACIL, ...MEDIO_EXTRA, ...DIFICIL_EXTRA]) }
+    };
+
+    let currentLevelKey = "facil";
+    let currentPool = [];
+    let currentQuestion = null;
+    let questionIndex = 0;
+    let score = 0;
+    let streak = 0;
+    let mode = "flagToCountry";
+    let answered = false;
+    let mistakes = JSON.parse(localStorage.getItem("flagMistakesMarco") || "[]");
+
+    const els = {
+      menu: document.getElementById("menu"),
+      game: document.getElementById("game"),
+      result: document.getElementById("result"),
+      score: document.getElementById("score"),
+      streak: document.getElementById("streak"),
+      levelName: document.getElementById("levelName"),
+      questionNumber: document.getElementById("questionNumber"),
+      totalQuestions: document.getElementById("totalQuestions"),
+      progress: document.getElementById("progress"),
+      question: document.getElementById("question"),
+      flag: document.getElementById("flag"),
+      answers: document.getElementById("answers"),
+      feedback: document.getElementById("feedback"),
+      resultText: document.getElementById("resultText"),
+      stars: document.getElementById("stars"),
+      modeText: document.getElementById("modeText")
+    };
+
+    function showScreen(name) {
+      [els.menu, els.game, els.result].forEach(s => s.classList.remove("active"));
+      els[name].classList.add("active");
+    }
+
+    function showMenu() {
+      showScreen("menu");
+      els.levelName.textContent = "Inicio";
+    }
+
+    function startGame(levelKey) {
+      currentLevelKey = levelKey;
+      score = 0;
+      streak = 0;
+      questionIndex = 0;
+      answered = false;
+
+      if (levelKey === "repaso") {
+        const saved = mistakes.map(name => findCountryByName(name)).filter(Boolean);
+        currentPool = saved.length >= 4 ? saved : [...LEVELS.facil.countries];
+        els.levelName.textContent = "Repaso";
+        els.totalQuestions.textContent = Math.min(10, currentPool.length);
+      } else {
+        currentPool = [...LEVELS[levelKey].countries];
+        els.levelName.textContent = LEVELS[levelKey].name;
+        els.totalQuestions.textContent = LEVELS[levelKey].questions;
+      }
+
+      shuffle(currentPool);
+      updateStats();
+      showScreen("game");
+      nextQuestion();
+    }
+
+    function restartSameLevel() { startGame(currentLevelKey); }
+
+    function toggleMode() {
+      mode = mode === "flagToCountry" ? "countryToFlag" : "flagToCountry";
+      els.modeText.textContent = mode === "flagToCountry" ? "Bandera → País" : "País → Bandera";
+      nextQuestion(true);
+    }
+
+    function nextQuestion(sameIndex = false) {
+      answered = false;
+      els.feedback.textContent = "";
+      els.feedback.className = "feedback";
+      els.answers.innerHTML = "";
+
+      const total = getTotalQuestions();
+      if (!sameIndex && questionIndex >= total) {
+        finishGame();
+        return;
+      }
+
+      currentQuestion = currentPool[questionIndex % currentPool.length];
+      const options = makeOptions(currentQuestion, currentPool);
+
+      els.questionNumber.textContent = questionIndex + 1;
+      els.progress.style.width = `${(questionIndex / total) * 100}%`;
+
+      if (mode === "flagToCountry") {
+        els.question.textContent = "Marco, ¿qué país tiene esta bandera?";
+        els.flag.textContent = currentQuestion.flag;
+        els.flag.style.display = "block";
+        options.forEach(country => addAnswerButton(country.name, country.name === currentQuestion.name));
+      } else {
+        els.question.textContent = `Marco, busca la bandera de ${currentQuestion.name}`;
+        els.flag.textContent = "";
+        els.flag.style.display = "none";
+        options.forEach(country => addAnswerButton(country.flag, country.name === currentQuestion.name, country.name, true));
+      }
+    }
+
+    function addAnswerButton(text, isCorrect, label = text, isFlagOption = false) {
+      const btn = document.createElement("button");
+      btn.className = isFlagOption ? "answer flag-option" : "answer";
+      btn.textContent = text;
+      btn.setAttribute("aria-label", label);
+      btn.onclick = () => chooseAnswer(btn, isCorrect);
+      els.answers.appendChild(btn);
+    }
+
+    function chooseAnswer(button, isCorrect) {
+      if (answered) return;
+      answered = true;
+
+      const allButtons = [...document.querySelectorAll(".answer")];
+
+      if (isCorrect) {
+        score += 10 + Math.min(streak * 2, 10);
+        streak += 1;
+        button.classList.add("correct");
+        els.feedback.textContent = randomGoodMessage();
+        els.feedback.classList.add("good");
+        removeMistake(currentQuestion.name);
+        playTone("good");
+      } else {
+        streak = 0;
+        button.classList.add("wrong");
+        els.feedback.textContent = `Era ${currentQuestion.name}, Marco. ¡La próxima sale!`;
+        els.feedback.classList.add("bad");
+        addMistake(currentQuestion.name);
+        playTone("bad");
+        allButtons.forEach(b => {
+          const label = b.getAttribute("aria-label");
+          if (label === currentQuestion.name || b.textContent === currentQuestion.name) b.classList.add("correct");
+        });
+      }
+
+      updateStats();
+      questionIndex += 1;
+      setTimeout(() => nextQuestion(), isCorrect ? 850 : 1500);
+    }
+
+    function finishGame() {
+      els.progress.style.width = "100%";
+      showScreen("result");
+      const total = getTotalQuestions();
+      const maxScore = total * 20;
+      const ratio = score / maxScore;
+
+      if (ratio >= 0.75) {
+        els.stars.textContent = "⭐⭐⭐";
+        els.resultText.textContent = `Marco ha conseguido ${score} puntos. Muy bien: ya reconoce muchas banderas.`;
+      } else if (ratio >= 0.45) {
+        els.stars.textContent = "⭐⭐";
+        els.resultText.textContent = `Marco ha conseguido ${score} puntos. Buen trabajo. Una partida más y mejorará rápido.`;
+      } else {
+        els.stars.textContent = "⭐";
+        els.resultText.textContent = `Marco ha conseguido ${score} puntos. Está empezando. El modo repaso le ayudará.`;
+      }
+    }
+
+    function getTotalQuestions() {
+      if (currentLevelKey === "repaso") return Math.min(10, currentPool.length);
+      return LEVELS[currentLevelKey].questions;
+    }
+
+    function makeOptions(correct, pool) {
+      const others = pool.filter(c => c.name !== correct.name);
+      shuffle(others);
+      const options = [correct, ...others.slice(0, 3)];
+      return shuffle(options);
+    }
+
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+      return array;
+    }
+
+    function updateStats() {
+      els.score.textContent = score;
+      els.streak.textContent = streak;
+    }
+
+    function randomGoodMessage() {
+      const messages = ["¡Correcto, Marco!", "¡Muy bien!", "¡Genial!", "¡Lo tienes!", "¡Bandera cazada!"];
+      return messages[Math.floor(Math.random() * messages.length)];
+    }
+
+    function addMistake(name) {
+      if (!mistakes.includes(name)) mistakes.push(name);
+      localStorage.setItem("flagMistakesMarco", JSON.stringify(mistakes));
+    }
+
+    function removeMistake(name) {
+      mistakes = mistakes.filter(item => item !== name);
+      localStorage.setItem("flagMistakesMarco", JSON.stringify(mistakes));
+    }
+
+    function findCountryByName(name) {
+      const all = [...LEVELS.facil.countries, ...MEDIO_EXTRA, ...DIFICIL_EXTRA].map(item => Array.isArray(item) ? { name: item[0], flag: item[1] } : item);
+      return all.find(c => c.name === name);
+    }
+
+    function playTone(type) {
+      try {
+        const audio = new (window.AudioContext || window.webkitAudioContext)();
+        const oscillator = audio.createOscillator();
+        const gain = audio.createGain();
+        oscillator.connect(gain);
+        gain.connect(audio.destination);
+        oscillator.frequency.value = type === "good" ? 660 : 180;
+        oscillator.type = "sine";
+        gain.gain.setValueAtTime(0.0001, audio.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.08, audio.currentTime + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audio.currentTime + 0.16);
+        oscillator.start();
+        oscillator.stop(audio.currentTime + 0.18);
+      } catch (e) {}
+    }
+  </script>
+</body>
+</html>
