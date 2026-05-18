@@ -340,16 +340,20 @@
     </header>
 
     <section id="menu" class="screen active">
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px;">
+        <button class="btn" onclick="setMode('flagToCountry')">🟦 Bandera → País</button>
+        <button class="btn secondary" onclick="setMode('countryToFlag')">🏳️ País → Bandera</button>
+      </div>
       <div class="menu-grid">
         <button class="level-card" onclick="startGame('facil')">
           <div class="big-emoji">⭐</div>
           <div class="level-title">Nivel 1: Súper fáciles</div>
-          <div class="level-desc">40 banderas muy conocidas, incluyendo UE y ONU. Para empezar tranquilo, Marco.</div>
+          <div class="level-desc">50 banderas muy conocidas, incluyendo UE y ONU. Para empezar tranquilo, Marco.</div>
         </button>
         <button class="level-card" onclick="startGame('medio')">
           <div class="big-emoji">🚀</div>
           <div class="level-title">Nivel 2: Explorador</div>
-          <div class="level-desc">80 banderas importantes del mundo. Más reto, pero todavía manejable.</div>
+          <div class="level-desc">100 banderas importantes del mundo. Más reto, pero todavía manejable.</div>
         </button>
         <button class="level-card" onclick="startGame('dificil')">
           <div class="big-emoji">🏆</div>
@@ -369,7 +373,7 @@
       <div class="toolbar">
         <button class="btn secondary" onclick="showMenu()">← Menú</button>
         <div class="pill">Pregunta <span id="questionNumber">1</span> de <span id="totalQuestions">10</span></div>
-        <button class="btn warn" onclick="toggleMode()">Modo: <span id="modeText">Bandera → País</span></button>
+        <div class="pill">Modo: <span id="modeText">Bandera → País</span></div>
       </div>
 
       <div class="progress-wrap"><div id="progress" class="progress"></div></div>
@@ -416,6 +420,8 @@
       ["Grecia","🇬🇷"],
       ["India","🇮🇳"],
       ["Irlanda","🇮🇪"],
+      ["Islandia","🇮🇸"],
+      ["Israel","🇮🇱"],
       ["Italia","🇮🇹"],
       ["Japón","🇯🇵"],
       ["Malta","🇲🇹"],
@@ -434,18 +440,25 @@
       ["Suiza","🇨🇭"],
       ["Turquía","🇹🇷"],
       ["Ucrania","🇺🇦"],
-      ["Unión Europea","🇪🇺"]
+      ["Unión Europea","🇪🇺"],
+      ["Colombia","🇨🇴"],
+      ["Cuba","🇨🇺"],
+      ["Emiratos Árabes Unidos","🇦🇪"],
+      ["Indonesia","🇮🇩"],
+      ["Kenia","🇰🇪"],
+      ["Perú","🇵🇪"],
+      ["Tailandia","🇹🇭"],
+      ["Vietnam","🇻🇳"]
     ];
 
     const MEDIO_EXTRA = [
-      ["Bangladés","🇧🇩"], ["Bolivia","🇧🇴"], ["Bulgaria","🇧🇬"], ["Colombia","🇨🇴"], ["Corea del Norte","🇰🇵"],
-      ["Costa Rica","🇨🇷"], ["Croacia","🇭🇷"], ["Cuba","🇨🇺"], ["Ecuador","🇪🇨"], ["Emiratos Árabes Unidos","🇦🇪"],
-      ["Etiopía","🇪🇹"], ["Filipinas","🇵🇭"], ["Ghana","🇬🇭"], ["Hungría","🇭🇺"], ["Indonesia","🇮🇩"],
-      ["Irak","🇮🇶"], ["Irán","🇮🇷"], ["Islandia","🇮🇸"], ["Israel","🇮🇱"], ["Jamaica","🇯🇲"],
-      ["Kenia","🇰🇪"], ["Líbano","🇱🇧"], ["Luxemburgo","🇱🇺"], ["Malasia","🇲🇾"], ["Nigeria","🇳🇬"],
-      ["Pakistán","🇵🇰"], ["Paraguay","🇵🇾"], ["Perú","🇵🇪"], ["Qatar","🇶🇦"], ["República Checa","🇨🇿"],
+      ["Bangladés","🇧🇩"], ["Bolivia","🇧🇴"], ["Bulgaria","🇧🇬"], ["Corea del Norte","🇰🇵"],
+      ["Costa Rica","🇨🇷"], ["Croacia","🇭🇷"], ["Ecuador","🇪🇨"],
+      ["Etiopía","🇪🇹"], ["Filipinas","🇵🇭"], ["Ghana","🇬🇭"], ["Hungría","🇭🇺"],
+      ["Irak","🇮🇶"], ["Irán","🇮🇷"], ["Jamaica","🇯🇲"], ["Líbano","🇱🇧"], ["Luxemburgo","🇱🇺"], ["Malasia","🇲🇾"], ["Nigeria","🇳🇬"],
+      ["Pakistán","🇵🇰"], ["Paraguay","🇵🇾"], ["Qatar","🇶🇦"], ["República Checa","🇨🇿"],
       ["República Dominicana","🇩🇴"], ["Rumanía","🇷🇴"], ["Senegal","🇸🇳"], ["Serbia","🇷🇸"], ["Singapur","🇸🇬"],
-      ["Tailandia","🇹🇭"], ["Tanzania","🇹🇿"], ["Uruguay","🇺🇾"], ["Venezuela","🇻🇪"], ["Vietnam","🇻🇳"]
+      ["Tanzania","🇹🇿"], ["Uruguay","🇺🇾"], ["Venezuela","🇻🇪"]
     ];
 
     const DIFICIL_EXTRA = [
@@ -478,9 +491,9 @@
     const toCountries = list => list.map(([name, flag]) => ({ name, flag }));
 
     const LEVELS = {
-      facil: { name: "Súper fáciles", questions: 10, countries: toCountries(FACIL) },
-      medio: { name: "Explorador", questions: 12, countries: toCountries([...FACIL, ...MEDIO_EXTRA]) },
-      dificil: { name: "Experto", questions: 15, countries: toCountries([...FACIL, ...MEDIO_EXTRA, ...DIFICIL_EXTRA]) }
+      facil: { name: "Súper fáciles", questions: 20, countries: toCountries(FACIL) },
+      medio: { name: "Explorador", questions: 30, countries: toCountries([...FACIL, ...MEDIO_EXTRA]) },
+      dificil: { name: "Experto", questions: 40, countries: toCountries([...FACIL, ...MEDIO_EXTRA, ...DIFICIL_EXTRA]) }
     };
 
     let currentLevelKey = "facil";
@@ -548,10 +561,9 @@
 
     function restartSameLevel() { startGame(currentLevelKey); }
 
-    function toggleMode() {
-      mode = mode === "flagToCountry" ? "countryToFlag" : "flagToCountry";
+    function setMode(newMode) {
+      mode = newMode;
       els.modeText.textContent = mode === "flagToCountry" ? "Bandera → País" : "País → Bandera";
-      nextQuestion(true);
     }
 
     function nextQuestion(sameIndex = false) {
