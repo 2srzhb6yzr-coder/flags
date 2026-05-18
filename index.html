@@ -341,9 +341,10 @@
 
     <section id="menu" class="screen active">
       <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px;">
-        <button class="btn" onclick="setMode('flagToCountry')">🟦 Bandera → País</button>
-        <button class="btn secondary" onclick="setMode('countryToFlag')">🏳️ País → Bandera</button>
+        <button id="btnFlagToCountry" class="btn" onclick="setMode('flagToCountry')">🟦 Bandera → País</button>
+        <button id="btnCountryToFlag" class="btn secondary" onclick="setMode('countryToFlag')">🏳️ País → Bandera</button>
       </div>
+      
       <div class="menu-grid">
         <button class="level-card" onclick="startGame('facil')">
           <div class="big-emoji">⭐</div>
@@ -563,9 +564,16 @@
 
     function setMode(newMode) {
       mode = newMode;
-      els.modeText.textContent = mode === "flagToCountry" ? "Bandera → País" : "País → Bandera";
+    
+      els.modeText.textContent =
+        mode === "flagToCountry" ? "Bandera → País" : "País → Bandera";
+    
+      document.getElementById("btnFlagToCountry").className =
+        mode === "flagToCountry" ? "btn" : "btn secondary";
+    
+      document.getElementById("btnCountryToFlag").className =
+        mode === "countryToFlag" ? "btn" : "btn secondary";
     }
-
     function nextQuestion(sameIndex = false) {
       answered = false;
       els.feedback.textContent = "";
